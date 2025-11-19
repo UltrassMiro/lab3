@@ -1,0 +1,8 @@
+//
+// Created by Dimon on 19.11.2025.
+//
+
+#ifndef LAB35_BINARYPROVIDER_H
+#define LAB35_BINARYPROVIDER_H
+
+#endif //LAB35_BINARYPROVIDER_H
