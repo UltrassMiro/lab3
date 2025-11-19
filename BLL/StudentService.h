@@ -1,8 +1,22 @@
-//
-// Created by Dimon on 19.11.2025.
-//
+#pragma once
+#include <vector>
+#include <string>
+#include "../DAL/Student.h"
+#include "../DAL/EntityContext.h"
+#include "DomainException.h"
 
-#ifndef LAB35_STUDENTSERVICE_H
-#define LAB35_STUDENTSERVICE_H
+using namespace std;
 
-#endif //LAB35_STUDENTSERVICE_H
+class StudentService {
+private:
+    EntityContext* ctx;
+public:
+    StudentService(EntityContext* c);
+
+    void AddStudent(vector<Student>& list, const Student& s);
+    int CountIdealWeight(const vector<Student>& list) const;
+    vector<Student> GetStudentsWithIdealWeight(const vector<Student>& list) const;
+
+    void Save(const vector<Student>& list, const string& filename);
+    vector<Student> Load(const string& filename);
+};

@@ -1,21 +1,18 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Student.h"
-#include "../DataProvider.h"
+#include "DataProvider.h"
+
 using namespace std;
 
 class EntityContext {
 private:
-    DataProvider* provider;
+    DataProvider* provider; // не володіє
 public:
-    EntityContext(DataProvider* dp) : provider(dp) {}
-
-    void SaveAll(const vector<Student>& data, const string& filename) {
-        provider->Save(data, filename);
+    EntityContext(DataProvider* dp) : provider(dp) {
+        if (!provider) throw std::runtime_error("EntityContext: provider is null");
     }
 
-    vector<Student> LoadAll(const string& filename) {
-        return provider->Load(filename);
-    }
+    void SaveAll(const vector<Student>& data, const string& filename);
+    vector<Student> LoadAll(const string& filename);
 };

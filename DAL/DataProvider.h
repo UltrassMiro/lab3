@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "Student.h"
+
 using namespace std;
 
 class DataProvider {

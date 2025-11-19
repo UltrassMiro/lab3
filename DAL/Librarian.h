@@ -1,8 +1,12 @@
-//
-// Created by Dimon on 19.11.2025.
-//
+#pragma once
+#include "Student.h"
 
-#ifndef PART2_STUDENTSSERIALIZATION_LIBRARIAN_H
-#define PART2_STUDENTSSERIALIZATION_LIBRARIAN_H
+class Librarian : public Student {
+public:
+    bool knowsBookCatalog = false;
 
-#endif //PART2_STUDENTSSERIALIZATION_LIBRARIAN_H
+    Librarian() = default;
+
+    Librarian(const Student& s, bool knows)
+        : Student(s), knowsBookCatalog(knows) {}
+};

@@ -1,8 +1,12 @@
-//
-// Created by Dimon on 19.11.2025.
-//
+#pragma once
+#include "Student.h"
 
-#ifndef PART2_STUDENTSSERIALIZATION_BIKESKILL_H
-#define PART2_STUDENTSSERIALIZATION_BIKESKILL_H
+class SoftwareDeveloper : public Student {
+public:
+    bool knowsCPlusPlus = false;
 
-#endif //PART2_STUDENTSSERIALIZATION_BIKESKILL_H
+    SoftwareDeveloper() = default;
+
+    SoftwareDeveloper(const Student& s, bool knows)
+        : Student(s), knowsCPlusPlus(knows) {}
+};
