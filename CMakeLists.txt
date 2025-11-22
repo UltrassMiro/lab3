@@ -5,7 +5,6 @@ project(StudentsSerialization LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Явно вказуємо папки, де є ваші .cpp
 file(GLOB SRC_FILES
         "${CMAKE_SOURCE_DIR}/main.cpp"
         "${CMAKE_SOURCE_DIR}/BLL/*.cpp"
