@@ -15,7 +15,7 @@ using namespace std;
 class Menu {
 public:
     static void MainMenu() {
-        cout << "Students (Part 2) — serialization example\n";
+        cout << "Students:\n";
         cout << "Select provider:\n";
         cout << "1) JSON\n2) Binary\n3) Custom (CSV)\n";
         cout << "Choice: ";
