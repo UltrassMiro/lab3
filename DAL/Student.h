@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdint>
-
+#include <functional>
 using namespace std;
 
 class Student {
@@ -20,15 +20,17 @@ public:
     string passportNumber;
 
     Student() = default;
-    Student(const string& ln, const string& fn, int h, int w,
-            const string& id, const string& ps, const string& pn)
-        : lastName(ln), firstName(fn), height(h), weight(w),
-          studentID(id), passportSeries(ps), passportNumber(pn) {}
+    Student(const string& ln, const string& fn, int h, int w, const string& id, const string& ps, const string& pn)
+        : lastName(ln), firstName(fn), height(h), weight(w), studentID(id), passportSeries(ps), passportNumber(pn) {}
 
-    bool IsIdealWeight() const {
-        return weight == height - 110;
+    bool IsIdealWeight() const { return weight == height - 110; }
+
+    virtual void LearnOnline(bool internetAvailable) {
+        if (internetAvailable)
+            cout << firstName << " is learning online.\n";
     }
 
+    // JSON
     string ToJSON() const {
         ostringstream ss;
         ss << "{";
@@ -45,7 +47,7 @@ public:
 
     static Student FromJSON(const string& json) {
         Student s;
-        auto getVal = [&](const string& key)->string {
+        auto getVal = [&](const string& key) -> string {
             size_t pos = json.find("\"" + key + "\"");
             if (pos == string::npos) return "";
             pos = json.find(':', pos);
@@ -56,18 +58,14 @@ public:
                 pos++;
                 string out;
                 while (pos < json.size() && json[pos] != '"') {
-                    if (json[pos] == '\\' && pos + 1 < json.size()) {
-                        pos++;
-                        out.push_back(json[pos]);
-                    } else out.push_back(json[pos]);
+                    if (json[pos] == '\\' && pos + 1 < json.size()) { pos++; out.push_back(json[pos]); }
+                    else out.push_back(json[pos]);
                     pos++;
                 }
                 return out;
             } else {
                 string num;
-                while (pos < json.size() && (json[pos] == '-' || isdigit((unsigned char)json[pos]))) {
-                    num.push_back(json[pos++]);
-                }
+                while (pos < json.size() && (json[pos] == '-' || isdigit((unsigned char)json[pos]))) { num.push_back(json[pos++]); }
                 return num;
             }
         };
@@ -81,21 +79,28 @@ public:
         return s;
     }
 
+    // CSV
     string ToCSVLine() const {
-
         ostringstream ss;
-        ss << EscapeCsv(lastName) << "," << EscapeCsv(firstName) << "," << height << "," << weight << ","
-           << EscapeCsv(studentID) << "," << EscapeCsv(passportSeries) << "," << EscapeCsv(passportNumber);
+        ss << EscapeCsv(lastName) << "," << EscapeCsv(firstName) << "," << height << "," << weight
+           << "," << EscapeCsv(studentID) << "," << EscapeCsv(passportSeries) << "," << EscapeCsv(passportNumber);
         return ss.str();
+    }
+    bool operator==(const Student& other) const {
+        return lastName == other.lastName &&
+               firstName == other.firstName &&
+               height == other.height &&
+               weight == other.weight &&
+               studentID == other.studentID &&
+               passportSeries == other.passportSeries &&
+               passportNumber == other.passportNumber;
     }
 
     static Student FromCSVLine(const string& line) {
         Student s;
         vector<string> parts;
         string cur;
-
-        for (size_t i = 0; i < line.size(); ++i) {
-            char c = line[i];
+        for (char c : line) {
             if (c == ',') { parts.push_back(cur); cur.clear(); }
             else cur.push_back(c);
         }
@@ -112,6 +117,7 @@ public:
         return s;
     }
 
+    // Binary
     void WriteBinary(ostream& os) const {
         writeString(os, lastName);
         writeString(os, firstName);
@@ -146,22 +152,14 @@ private:
     }
 
     static string EscapeCsv(const string& in) {
-
         string out = in;
         for (char &c : out) if (c == '\n' || c == '\r') c = ' ';
         return out;
     }
 
-    static string UnescapeCsv(const string& in) {
-        return in;
-    }
-
-    static void writeInt(ostream& os, int v) {
-        os.write(reinterpret_cast<const char*>(&v), sizeof(v));
-    }
-    static int readInt(istream& is) {
-        int v = 0; is.read(reinterpret_cast<char*>(&v), sizeof(v)); return v;
-    }
+    static string UnescapeCsv(const string& in) { return in; }
+    static void writeInt(ostream& os, int v) { os.write(reinterpret_cast<const char*>(&v), sizeof(v)); }
+    static int readInt(istream& is) { int v = 0; is.read(reinterpret_cast<char*>(&v), sizeof(v)); return v; }
     static void writeString(ostream& os, const string& s) {
         uint32_t len = static_cast<uint32_t>(s.size());
         os.write(reinterpret_cast<const char*>(&len), sizeof(len));
@@ -171,14 +169,8 @@ private:
         uint32_t len = 0;
         is.read(reinterpret_cast<char*>(&len), sizeof(len));
         string s;
-        if (len) {
-            s.resize(len);
-            is.read(&s[0], len);
-        }
+        if (len) { s.resize(len); is.read(&s[0], len); }
         return s;
     }
-
-    int safeStoi(const string& s) {
-        try { return stoi(s); } catch (...) { return 0; }
-    }
+    int safeStoi(const string& s) { try { return stoi(s); } catch (...) { return 0; } }
 };

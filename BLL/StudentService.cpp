@@ -10,13 +10,15 @@ void StudentService::AddStudent(vector<Student>& list, const Student& s) {
 
 int StudentService::CountIdealWeight(const vector<Student>& list) const {
     int count = 0;
-    for (const auto& s : list) if (s.IsIdealWeight()) ++count;
+    for (const auto& s : list)
+        if (s.IsIdealWeight()) ++count;
     return count;
 }
 
 vector<Student> StudentService::GetStudentsWithIdealWeight(const vector<Student>& list) const {
     vector<Student> out;
-    for (const auto& s : list) if (s.IsIdealWeight()) out.push_back(s);
+    for (const auto& s : list)
+        if (s.IsIdealWeight()) out.push_back(s);
     return out;
 }
 
@@ -26,4 +28,10 @@ void StudentService::Save(const vector<Student>& list, const string& filename) {
 
 vector<Student> StudentService::Load(const string& filename) {
     return ctx->LoadAll(filename);
+}
+
+// додатковий функціонал: змінити вагу та виклик callback
+void StudentService::AdjustWeight(Student& s, int delta, function<void(const Student&)> callback) {
+    s.weight += delta;
+    if (callback) callback(s);
 }
