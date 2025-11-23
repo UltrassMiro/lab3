@@ -7,14 +7,12 @@
 using ::testing::Return;
 using ::testing::_;
 
-// Mock DataProvider
 class MockDataProvider : public DataProvider {
 public:
     MOCK_METHOD(void, Save, (const vector<Student>&, const string&), (override));
     MOCK_METHOD(vector<Student>, Load, (const string&), (override));
 };
 
-// Mock EntityContext – робимо proxy до MockDataProvider
 class MockEntityContext : public EntityContext {
 public:
     MockDataProvider* dp;

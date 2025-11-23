@@ -6,17 +6,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 enable_testing()
 
-# Підключаємо локальний googletest
 add_subdirectory(
         ${CMAKE_SOURCE_DIR}/external/googletest
         ${CMAKE_BINARY_DIR}/external/googletest
 )
 
-
-# Твоя бібліотека
 add_library(student_lib
         ../DAL/Student.h
-#[[        ../DAL/Student.cpp]]
+
         ../BLL/StudentService.h
         ../BLL/StudentService.cpp
         ../DAL/EntityContext.h
@@ -30,7 +27,6 @@ add_library(student_lib
 
 target_include_directories(student_lib PUBLIC ${CMAKE_SOURCE_DIR}/..)
 
-# Тести
 add_executable(student_tests
         Student_tests.cpp
         StudentService_tests.cpp

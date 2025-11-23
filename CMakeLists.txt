@@ -17,8 +17,7 @@ add_subdirectory(tests)
 add_executable(students_app ${SRC_FILES}
         DAL/Librarian.h
         DAL/SoftwareDeveloper.h
-#[[        tests/Student_tests.cpp
-        tests/StudentService_tests.cpp]])
+)
 
 
 

@@ -7,7 +7,6 @@
 
 using namespace std;
 
-// Клас для перехоплення std::cout
 class CoutGuard {
     std::streambuf* old;
     std::ostringstream ss;
@@ -60,8 +59,8 @@ TEST(Student_Binary_Roundtrip, BinaryRoundtrip) {
 }
 
 TEST(Student_IsIdealWeight, TrueAndFalse) {
-    Student s1("A","B",170,60,"","",""); // 170-110 = 60 -> yes
-    Student s2("C","D",180,65,"","",""); // 180-110 = 70 -> no
+    Student s1("A","B",170,60,"","","");
+    Student s2("C","D",180,65,"","","");
     EXPECT_TRUE(s1.IsIdealWeight());
     EXPECT_FALSE(s2.IsIdealWeight());
 }
@@ -81,6 +80,3 @@ TEST(Student_LearnOnline_Virtual, DerivedBehavior) {
     EXPECT_NE(out.find("(Librarian) is learning online."), string::npos);
     EXPECT_NE(out.find("(Developer) is learning online."), string::npos);
 }
-
-// safeStoi ТЕСТУВАТИ НЕ МОЖНА — приватний метод!
-// Ти можеш тестувати його лише через FromCSV/FromJSON, але не напряму.
