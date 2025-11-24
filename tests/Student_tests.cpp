@@ -8,8 +8,8 @@
 using namespace std;
 
 class CoutGuard {
-    std::streambuf* old;
-    std::ostringstream ss;
+    streambuf* old;
+    ostringstream ss;
 public:
     CoutGuard() { old = cout.rdbuf(ss.rdbuf()); }
     ~CoutGuard() { cout.rdbuf(old); }

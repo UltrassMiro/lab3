@@ -13,7 +13,6 @@ add_subdirectory(
 
 add_library(student_lib
         ../DAL/Student.h
-
         ../BLL/StudentService.h
         ../BLL/StudentService.cpp
         ../DAL/EntityContext.h
